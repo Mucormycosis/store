@@ -1,0 +1,8 @@
+[
+  { "id": 1, "title": "Процессор AMD Ryzen 5 5600X", "price": 4299, "stock": 12, "category": "Процессоры" },
+  { "id": 2, "title": "Видеокарта NVIDIA RTX 4060", "price": 9499, "stock": 5, "category": "Видеокарты" },
+  { "id": 3, "title": "Материнская плата ASUS B550", "price": 3299, "stock": 8, "category": "Материнские платы" },
+  { "id": 4, "title": "Оперативная память 16GB DDR4", "price": 1199, "stock": 20, "category": "Память" },
+  { "id": 5, "title": "SSD 1TB NVMe", "price": 1899, "stock": 15, "category": "Накопители" },
+  { "id": 6, "title": "Блок питания 650W", "price": 1699, "stock": 10, "category": "Блоки питания" }
+]
