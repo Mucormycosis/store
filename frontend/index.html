@@ -14,6 +14,9 @@
       <input type="text" id="search" placeholder="Поиск товаров...">
     </div>
     <div class="header-actions">
+      <div id="user-avatar" class="avatar hidden"></div>
+      <button id="login-btn" class="icon-btn">Войти</button>
+      <button id="register-btn" class="icon-btn">Регистрация</button>
       <button id="fav-btn" class="icon-btn">❤ <span id="fav-count">0</span></button>
       <button id="cart-btn" class="icon-btn">🛒 <span id="cart-count">0</span></button>
     </div>
@@ -55,6 +58,22 @@
       <div class="total">Итого: <span id="cart-total">0</span> лей</div>
       <button class="btn">Оформить заказ</button>
     </div>
+  </div>
+</div>
+
+<div id="auth-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="auth-title">Вход</h2>
+      <button id="close-auth" class="close-btn">&times;</button>
+    </div>
+    <form id="auth-form" autocomplete="off">
+      <input type="text" id="auth-name" placeholder="Имя" style="display:none;width:100%;padding:10px;margin-bottom:10px;border:1px solid var(--border);border-radius:var(--r);">
+      <input type="email" id="auth-email" placeholder="Email" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid var(--border);border-radius:var(--r);">
+      <input type="password" id="auth-pass" placeholder="Пароль" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid var(--border);border-radius:var(--r);">
+      <button type="submit" class="btn" style="width:100%">Отправить</button>
+    </form>
+    <p style="margin-top:10px;font-size:14px;"><a href="#" id="toggle-auth">Нет аккаунта? Регистрация</a></p>
   </div>
 </div>
 

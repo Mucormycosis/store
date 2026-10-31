@@ -47,3 +47,56 @@ var cbs=document.querySelectorAll('.cat-btn');for(var ci=0;ci<cbs.length;ci++){c
 var cartBtn=document.getElementById('cart-btn');if(cartBtn){cartBtn.onclick=function(){renderCart();var mm=document.getElementById('cart-modal');if(mm)mm.classList.remove('hidden');};}
 var closeCart=document.getElementById('close-cart');if(closeCart){closeCart.onclick=function(){var mm=document.getElementById('cart-modal');if(mm)mm.classList.add('hidden');};}
 render();updateCounts();
+
+
+// --- Auth ---
+var API='http://localhost:3000/api';
+var isRegister=false;
+var authBtn=document.getElementById('auth-btn');
+var authModal=document.getElementById('auth-modal');
+var closeAuth=document.getElementById('close-auth');
+var authForm=document.getElementById('auth-form');
+var authName=document.getElementById('auth-name');
+var authTitle=document.getElementById('auth-title');
+var toggleAuth=document.getElementById('toggle-auth');
+function updateAuthBtn(){var u=JSON.parse(localStorage.getItem('user')||'null');if(authBtn)authBtn.textContent=u? (u.name||'Аккаунт'):'Войти';}
+if(authBtn)authBtn.onclick=function(){if(localStorage.getItem('token')){if(confirm('Выйти из аккаунта?')){localStorage.removeItem('token');localStorage.removeItem('user');updateAuthBtn();}return;}authModal.classList.remove('hidden');};
+if(closeAuth)closeAuth.onclick=function(){authModal.classList.add('hidden');};
+if(toggleAuth)toggleAuth.onclick=function(e){e.preventDefault();isRegister=!isRegister;authTitle.textContent=isRegister?'Регистрация':'Вход';authName.style.display=isRegister?'block':'none';toggleAuth.textContent=isRegister?'Уже есть аккаунт? Вход':'Нет аккаунта? Регистрация';};
+if(authForm)authForm.onsubmit=async function(e){e.preventDefault();var email=document.getElementById('auth-email').value;var password=document.getElementById('auth-pass').value;var name=authName.value;var url=isRegister?'/auth/register':'/auth/login';var body=isRegister?{name:name,email:email,password:password}:{email:email,password:password};try{var r=await fetch(API+url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});var data=await r.json();if(!r.ok)throw new Error(data.error||'Ошибка');localStorage.setItem('token',data.token);localStorage.setItem('user',JSON.stringify(data.user));authModal.classList.add('hidden');authForm.reset();updateAuthBtn();}catch(err){alert(err.message);}};
+updateAuthBtn();
+
+
+// --- Separate login/register buttons ---
+var loginBtn=document.getElementById('login-btn');
+var registerBtn=document.getElementById('register-btn');
+if(loginBtn)loginBtn.onclick=function(){isRegister=false;authTitle.textContent='Вход';authName.style.display='none';toggleAuth.textContent='Нет аккаунта? Регистрация';authModal.classList.remove('hidden');};
+if(registerBtn)registerBtn.onclick=function(){isRegister=true;authTitle.textContent='Регистрация';authName.style.display='block';toggleAuth.textContent='Уже есть аккаунт? Вход';authModal.classList.remove('hidden');};
+
+
+// --- Avatar indicator ---
+function updateAuthBtn2(){
+  var u=JSON.parse(localStorage.getItem('user')||'null');
+  var av=document.getElementById('user-avatar');
+  var lb=document.getElementById('login-btn');
+  var rb=document.getElementById('register-btn');
+  if(u){
+    if(av){av.textContent=(u.name||'U').charAt(0).toUpperCase();av.classList.remove('hidden');av.title=u.name||'';}
+    if(lb)lb.style.display='none';
+    if(rb)rb.style.display='none';
+  } else {
+    if(av)av.classList.add('hidden');
+    if(lb)lb.style.display='';
+    if(rb)rb.style.display='';
+  }
+}
+// override
+updateAuthBtn=updateAuthBtn2;
+updateAuthBtn2();
+// hook into existing calls by redefining name reference: call on login/logout
+var _origUpdate=updateAuthBtn2;
+
+
+var av=document.getElementById('user-avatar');
+if(av)av.onclick=function(){if(confirm('Выйти из аккаунта?')){localStorage.removeItem('token');localStorage.removeItem('user');updateAuthBtn2();}};
+
